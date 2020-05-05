@@ -1,4 +1,3 @@
-
 class Todojs {
     constructor(inp, list){
         this.inp = inp;
