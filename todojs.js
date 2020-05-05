@@ -10,7 +10,7 @@ class Todojs {
                 let random = Math.random();
                 $(list).append( `<div id="${random}">
                     ${$("#inp").val()}
-                    <button id="${random}">delete</button>
+                    <button id="${random}" >delete</button>
                     </div>`);
             }
         });
