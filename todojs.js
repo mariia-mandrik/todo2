@@ -1,24 +1,43 @@
 class Todojs {
-    constructor(inp, list){
-        this.inp = inp;
-        this.list = list;
-    }
-    initHandler(){
-        let list =this.list
-        $(this.inp).keypress(function(event){
-            if ( event.which == 13 ) {
-                let random = Math.random();
-                $(list).append( `<div id="${random}">
-                    ${$("#inp").val()}
-                    <button id="${random}" >delete</button>
-                    </div>`);
-            }
-        });
+  constructor(inputElementId, listElementId){
+    this.inputElementId = inputElementId;
+    this.listElementId = listElementId;
+  }
 
-        $(document).on('click','button[id^=0]', function(){
-            $(this).closest( "div[id^=0]" ).remove();
-        });
+  init(){
+    this.initSubmitHandler();
+    this.initRemoveItemHandler();
+  }
+
+  initSubmitHandler(){
+    $(this.inputElementId).keypress($.proxy(this.submitEvent, this));
+  }
+
+  initRemoveItemHandler(){
+    $(document).on('click', '.deleteItemButton', $.proxy(this.deleteEvent, this));
+  }
+
+  deleteEvent(event){
+    $(event.target).parent().remove();
+  }
+
+  submitEvent(event) {
+    const listElement = $(this.listElementId);
+    if (event.which === 13) {
+      let value = $(this.inputElementId).val();
+      listElement.append(this.itemTemplate(value));
+      $(this.inputElementId).val('');
     }
+  }
+
+  itemTemplate(value){
+    let random = Math.random();
+    return `
+      <div id="${random}">
+        ${value}
+        <button class="deleteItemButton">delete</button>
+      </div>
+    `;
+  }
 }
 
-new Todojs("#inp","#list").initHandler();
